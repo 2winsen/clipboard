@@ -1,4 +1,4 @@
-$(function () {
+$(() => {
     const createCodeMirror = (value) => {
         const EDITOR_DEBOUNNCE = 3000
         let codeMirror = CodeMirror($('#editor-pane').get(0), {
@@ -13,7 +13,7 @@ $(function () {
             }
             if (changeObj.origin !== 'setValue') {
                 $.post('/editor', payload)
-                    .fail(function (err) {
+                    .fail((err) => {
                         throw new Error(err)
                         $errorPanel.show()
                     })
@@ -31,26 +31,23 @@ $(function () {
     }
 
     const connectWs = (codeMirror, port) => {
-        var hostName = window.document.location.host.replace(/:.*/, '');
-        var ws = new WebSocket('ws://' + hostName + `:${port}`);
-        ws.onmessage = function (event) {
-            codeMirror.setValue(event.data)
-        };
+        var hostName = window.document.location.host.replace(/:.*/, '')
+        var ws = new WebSocket('ws://' + hostName + `:${port}`)
+        ws.onmessage = (event) => codeMirror.setValue(event.data)
     }
 
     const init = () => {
         splitPane()
         $.get('/editor')
-            .done(function (res) {
+            .done((res) => {
                 let codeMirror = createCodeMirror(res.text)
                 connectWs(codeMirror, res.wsPort)
             })
-            .fail(function (err) {
+            .fail((err) => {
                 throw new Error(err)
                 $errorPanel.show()
             })
     }
 
     init()
-
 })

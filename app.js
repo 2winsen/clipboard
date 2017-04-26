@@ -21,7 +21,7 @@ const wss = new WebSocket.Server({ server });
 WssModel.wss = wss
 
 server.listen(config.get('ws-port'), function listening() {
-    winston.info(`Listening on ${server.address().port}`)
+    winston.info(`Listening WebSockets on ${server.address().port}`)
 });
 
 // view engine setup
