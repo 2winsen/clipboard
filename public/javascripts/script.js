@@ -31,8 +31,7 @@ $(() => {
     }
 
     const connectWs = (codeMirror, port) => {
-        var hostName = window.document.location.host.replace(/:.*/, '')
-        var ws = new WebSocket('ws://' + hostName + `:${port}`)
+        var ws = new WebSocket(`ws://${window.document.location.host}`)
         ws.onmessage = (event) => codeMirror.setValue(event.data)
     }
 

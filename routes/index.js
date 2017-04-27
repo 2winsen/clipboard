@@ -12,8 +12,7 @@ router.get('/', function (req, res, next) {
 router.get('/editor', function (req, res, next) {
     try {
         res.send({
-            text: EditorModel.getText(),
-            wsPort: config.get('ws-port')
+            text: EditorModel.getText()
         })
     } catch (err) {
         next(err)

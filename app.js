@@ -10,17 +10,16 @@ const url = require('url')
 const config = require('config')
 const winston = require('winston')
 const WssModel = require('./models/wss-model')
-
-var index = require('./routes/index');
+const index = require('./routes/index');
 
 var app = express();
 app.use(bodyParser.json())
 
+// start WebSocket server
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 WssModel.wss = wss
-
-server.listen(config.get('ws-port'), function listening() {
+server.listen(config.get('ws-port'), () => {
     winston.info(`Listening WebSockets on ${server.address().port}`)
 });
 
@@ -47,7 +46,7 @@ app.use(function (req, res, next) {
 });
 
 // error handler
-app.use(function (err, req, res, next) {    
+app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.send('error');
 });
