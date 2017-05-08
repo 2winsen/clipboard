@@ -53,3 +53,7 @@ body {
 #editor-pane .CodeMirror {
     height: 100%;
 }
+
+#error-panel {
+    margin-bottom: 0;
+}

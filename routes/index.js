@@ -6,7 +6,7 @@ const config = require('config')
 const WebSocket = require('ws')
 
 router.get('/', function (req, res, next) {
-    res.render('index', { title: 'Express' });
+    res.render('index');
 });
 
 router.get('/editor', function (req, res, next) {

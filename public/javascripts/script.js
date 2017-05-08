@@ -1,11 +1,18 @@
 $(() => {
+    const $errorPanel = $('#error-panel')
+
+    const xhrFailHandler = (err) => {
+        $errorPanel.show()
+        throw new Error(`XHR request faled with status text - ${err.statusText}`)
+    }
+
     const createCodeMirror = (value) => {
-        const EDITOR_DEBOUNNCE = 3000
+        const EDITOR_DEBOUNNCE = 1500
         let codeMirror = CodeMirror($('#editor-pane').get(0), {
             lineNumbers: true,
             styleActiveLine: true,
             value: value,
-            lineWrapping : true
+            lineWrapping: true
         })
         codeMirror.on('change', _.debounce((codeMirror, changeObj) => {
             const payload = {
@@ -13,10 +20,7 @@ $(() => {
             }
             if (changeObj.origin !== 'setValue') {
                 $.post('/editor', payload)
-                    .fail((err) => {
-                        throw new Error(err)
-                        $errorPanel.show()
-                    })
+                    .fail(xhrFailHandler)
             }
         }, EDITOR_DEBOUNNCE, { trailing: true }))
         return codeMirror
@@ -33,6 +37,10 @@ $(() => {
     const connectWs = (codeMirror, port) => {
         var ws = new WebSocket(`ws://${window.document.location.host}`)
         ws.onmessage = (event) => codeMirror.setValue(event.data)
+        ws.onclose = (event) => {
+            $errorPanel.show()
+            throw new Error(`WS closed - CODE: ${event.code}, REASON: ${event.reason}`)
+        }
     }
 
     const init = () => {
@@ -42,10 +50,7 @@ $(() => {
                 let codeMirror = createCodeMirror(res.text)
                 connectWs(codeMirror, res.wsPort)
             })
-            .fail((err) => {
-                throw new Error(err)
-                $errorPanel.show()
-            })
+            .fail(xhrFailHandler)
     }
 
     init()

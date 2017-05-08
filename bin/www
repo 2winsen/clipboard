@@ -29,6 +29,7 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+// Proxy WS messages to WS server that is listening on ws-port
 var proxy = new httpProxy.createProxyServer({
     target: `ws://localhost:${config.get('ws-port')}`,
     ws: true
