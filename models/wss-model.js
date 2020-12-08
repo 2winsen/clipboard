@@ -1,3 +1,3 @@
 module.exports = {
-    wss: null
+  wss: null
 }
