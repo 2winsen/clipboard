@@ -1,4 +1,5 @@
-# Web Clipboard
+# Clipboard
+Project, where user can share plain text over the web
 
 ## Demo
 ![](https://github.com/2winsen/clipboard/blob/master/demo.gif)
